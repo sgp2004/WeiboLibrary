@@ -1,0 +1,25 @@
+<html>
+    <title>添加图书</title>
+<body>
+<div class="head">    <h2>WeiboCoder读书馆,hello {{.user}}</h2>
+<div class="left" id="userinfo">
+<form method="post" action="/book/create">
+<input type="hidden" name="user" style="width: 100px;" value="{{.user}}"  /><br/>
+ <label>书名 *</label>   <input  type="text" name="book" style="width: 100px;"  /><br/>
+<label>作者</label>   <input  type="text" name="author" style="width: 100px;"  /><br/>   
+<label>介绍</label>   <input  type="textarea" name="describe" style="width: 500px;"  /><br/>    
+<button type="submit" id="button" class="btn btn-primary">提交</button>
+</form>
+  </div>
+{{.book.Name}}
+{{.msg}}
+我的图书列表<br/>
+
+{{range $.booklist}}
+书名： {{.Name}} 作者：{{.Author}} 描述：{{.Describe}}   {{.ModifiedTime}}   <br/><br/>
+{{end}}
+
+</div>
+<a href="/index">返回首页</a>
+</body>
+</html>

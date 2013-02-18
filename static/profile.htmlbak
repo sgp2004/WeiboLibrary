@@ -1,0 +1,24 @@
+<html>
+<body>
+   hello, {{.user.UserName}}</br>
+   我的店里有{{.user.OwnBookCount}}本书，</br>
+   我借了{{.user.BorrowBookCount}}本书 </br>
+    <a href="/book/create?">添加图书</a> </br>
+   我借阅的书：</br>
+    {{range $.borrowList}}
+        书名：{{.BookInfo.Name}} ,作者: {{.BookInfo.Author}},
+        {{if .BookInfo.SendBorrowReq}}申请借阅中{{end}}
+        {{if .BookInfo.AcceptBorrow}}<a href="/book/borrow?id={{.Id}}&status=3">归还</a>{{end}} 
+        {{if .BookInfo.SendReturnReq}} 归还待确认中{{end}} 
+        <br/>描述：{{.BookInfo.Describe}}</br>
+    {{end}}
+   我借出的书:</br>
+    {{range $.lendList}}
+        书名：{{.BookInfo.Name}} ,作者: {{.BookInfo.Author}},
+        {{if .BookInfo.SendBorrowReq}}<a href="/book/borrow?id={{.Id}}&status=2">申请借阅中，确认借出</a>{{end}} 
+        {{if .BookInfo.SendReturnReq}}<a href="/book/borrow?id={{.Id}}">对方申请归还，确认归还</a>{{end}} 
+        {{if .BookInfo.AcceptBorrow}}借阅中{{end}} 
+        </br>描述：{{.BookInfo.Describe}}</br>
+    {{end}}
+</body>
+</html>

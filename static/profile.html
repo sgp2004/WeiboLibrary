@@ -1,0 +1,30 @@
+<html>
+<body>
+   hello, {{.user.UserName}}</br>
+   我的店里有{{.user.OwnBookCount}}本书，</br>
+   我借了{{.user.BorrowBookCount}}本书 </br>
+    <a href="/book/create?">添加图书</a> </br>
+   我借阅的书：</br>
+    {{range $.borrowList}}
+        来自{{.Owner.UserName}}的书店，书名：{{.BookInfo.Name}} ,作者: {{.BookInfo.Author}},
+        <br/>描述：{{.BookInfo.Describe}}</br>
+        笔记：{{.Note}}</br>
+         {{if .BookInfo.SendReturnReq}}状态： 申请归还中,待确认<br/>{{end}}
+          {{if .BookInfo.SendBorrowReq}}状态：借阅中; <a href="/book/borrow?id={{.BookInfo.Id}}&status=2">归还</a><br/>
+{{end}}
+    <form method=post action="/book/note/create?id={{.BookInfo.Id}}&info_id={{.Id}}">
+        <textarea style="width:100%;height:50px;line-height:18px;font-size:16px;" name="note"></textarea>   
+     <button type=submit> 写笔记</button>     
+        
+ <br/>
+    {{end}}
+   我借出的书:</br>
+    {{range $.lendList}}
+        借阅者: {{.Borrower.UserName}} , 书名：{{.BookInfo.Name}} ,作者: {{.BookInfo.Author}},
+        </br>描述：{{.BookInfo.Describe}}</br>
+{{if .BookInfo.SendReturnReq}} <a href="/book/borrow?id={{.BookInfo.Id}}&info_id={{.Id}}&status=0">接受归还</a> | <a href="/book/borrow?id={{.BookInfo.Id}}&info_id={{.Id}}&status=3"> 拒绝 </a><br/>{{end}}
+    {{end}}
+</br>
+<a href="/index">返回首页</a>
+</body>
+</html>

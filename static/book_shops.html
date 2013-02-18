@@ -1,0 +1,14 @@
+<html>
+<body>
+读书郎的书摊:
+<br/><br/>
+{{range $.users}}
+<a href="/book_shop?user={{.UserName}}"> {{.UserName}} 书店</a>：藏书:{{.OwnBookCount}}本 <br/>
+<HR align=left width=1000 color=#987cb9 SIZE=1>
+{{end}}
+</br>
+
+<HR align=left width=1000 color=#987cb9 SIZE=1>
+<a href="/index">返回首页</a>
+</body>
+</html>

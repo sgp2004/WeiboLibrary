@@ -1,0 +1,93 @@
+<html>
+    <title>WeiboCoder读书圈</title>
+   <link type="text/css" rel="stylesheet" href="assets/style.css"/>
+    <script type="text/javascript" src="assets/jquery-1.4.2.min.js"></script>
+    <script type="text/javascript">
+    $(function(){
+        //var u = $.cookie("user")//,  { path: '/' });
+        //if(user){
+        //    $( "#userinfo" ).html("<strong>welcome" + user + "</strong>" );
+       // }
+        $('#button').click(function(){
+          var a = $('#user').val();
+            var b = $('#pwd').val();
+            var data = {user:a,pwd:b}
+             $.post("user/login",data, function(result) {
+                  $( "#userinfo" ).html("<strong>" + result + "</strong>" );                 
+             });
+ 
+     });
+
+    });
+    </script>
+</head>
+<body>
+<div class="head">    <h1>WeiboCoder读书圈</h1>
+</div>
+
+<div class="menu-bar clearfix">
+<div class="content-block">
+<div class="menu">
+<ul>
+<li class="menuout"><a  id="highlight"  href="/feed">淘书记</a></li>
+</li>
+<li class="menuout"><a  href="/book_shops">逛书摊</a></li>
+<li class="menuout"><a  href="/my_shop">我的书摊</a></li>
+<!--<li class="menuout"><a  href="/about">关于</a></li>
+-->
+</ul>
+</div>
+</div>
+</div>
+
+
+<div class="left" id="userinfo">
+
+
+  <div class="form-actions">
+ <label>字    号</label><input id="user" type="text" name="user" style="width: 50px;" value="" /><br/>
+    <span></span>
+ <label>暗    语</label>   <input id="pwd" type="password" name="pwd" style="width: 50px;" value="" /><br/>
+   
+ <button type="submit" id="button" class="btn btn-primary">登陆</button>
+<br/><br/>
+<a  href="/user/logout">注销</a>
+
+<a href="/user/register">注册帐号</a>
+
+  </div>
+</div>
+<div class="main">
+    <div class="content-block">读书郎 {{$.user}}
+        <div class="shadow"></div>
+
+
+        <div class="col1">
+
+            <div class="block untagged" id='qiushi_tag_16900664'>
+              {{range $.infos}} 
+                 <div class="detail">
+                     <a href="/article/16900664" target="_blank">糗事#16900664</a>
+                 </div>
+
+                <div class="author">
+                    <img src="assets/user.jpg" alt="bc6333088" />
+                    <a href="/book_shop?user={{.Borrower.UserName}}" >{{.Borrower.UserName}}</a>
+                           
+                    借了<a href="/book_shop?user={{.Owner.UserName}}"> {{.Owner.UserName}}</a>的书<a href="/book?id={{.BookId}}">{{.BookInfo.Name}}</a>，写了读书笔记：{{.Note}}  {{.StartTime}}
+                </div>
+              {{end}}
+            </div>
+        </div>
+        <div class="col2">
+            读书排行榜
+            <div class="sponsor" id='qiushi_tag_16900664'>
+                  借了xx本书，写了xx条读书笔记 
+            </div>
+       </div>
+       
+<div>
+</div>
+<a href="http://www.douban.com/group/48775/">豆瓣小组：微博平台部读书圈</a>
+</body>
+</html>

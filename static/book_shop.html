@@ -1,0 +1,17 @@
+<html>
+<body>
+    {{.user.UserName}}的店</br>
+   店里有{{.user.OwnBookCount}}本书，<br/></br>
+   
+     {{range $.booklist}}
+        书名：{{.Name}} ,作者: {{.Author}}, 
+        {{if .AcceptReturn}}<a href="/book/borrow?id={{.Id}}&status=1">借阅</a>{{end}} </br>
+        
+        
+        描述：{{.Describe}}</br>
+<HR align=left width=1000 color=#987cb9 SIZE=1>        
+    {{end}}
+
+<a href="/index">返回首页</a>
+</body>
+</html>
