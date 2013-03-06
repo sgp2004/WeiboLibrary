@@ -1,19 +1,19 @@
 package service
 
 import (
+	"../dao"
 	"os/exec"
-    "../dao"
 )
 
-func Auth(user, pwd,pwdOriginal string) bool {
-    userInfo := dao.GetRegisterUser(user,pwd)
-    if userInfo != nil{
-        return true
-    }
-    print("check user by office code----")
+func Auth(user, pwd, pwdOriginal string) bool {
+	userInfo := dao.GetRegisterUser(user, pwd)
+	if userInfo != nil {
+		return true
+	}
+	print("check user by office code----")
 	cmd := exec.Command("java", "LDAPUtil", user, pwdOriginal)
 	out, err := cmd.Output()
-    print(string(out))
+	print(string(out))
 	if err != nil {
 		println("error:", err.Error())
 		return false

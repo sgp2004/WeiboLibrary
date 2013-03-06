@@ -15,14 +15,14 @@ type Book struct {
 	Img          string
 	ModifiedTime string
 	Count        int
-	Status       int  
-    /*0 init or returned ; 1 send borrow request; 
-        2 accept borrow ; 3 refuse; 4 send return request;5 refuse accept
-    */
-    SendBorrowReq bool
-    AcceptBorrow bool
-    SendReturnReq bool
-    AcceptReturn bool   
+	Status       int
+	/*0 init or returned ; 1 send borrow request; 
+	  2 accept borrow ; 3 refuse; 4 send return request;5 refuse accept
+	*/
+	SendBorrowReq bool
+	AcceptBorrow  bool
+	SendReturnReq bool
+	AcceptReturn  bool
 }
 
 func CreateBook(book *Book) {
@@ -34,28 +34,28 @@ func CreateBook(book *Book) {
 	db.Prepare(sql)
 	exec(db, sql, book.UserName, book.Name, book.Author, book.Describe, book.Img, book.Count)
 }
-func SetStatusForTemplate(book *Book){
-    print("set status")
-    print(book)
-    if book.Status ==0 {
-        book.AcceptReturn = true
-        book.SendBorrowReq = false
-        book.AcceptBorrow = false
-        book.SendReturnReq = false
-    }
-     if book.Status ==1 {
-        book.AcceptReturn = false
-        book.SendBorrowReq = true
-        book.AcceptBorrow = false
-        book.SendReturnReq = false
-    }
-    if book.Status ==2 {
-        book.AcceptReturn = false
-        book.SendBorrowReq = false
-        book.AcceptBorrow = false
-        book.SendReturnReq = true
-    }
-    print(book)
+func SetStatusForTemplate(book *Book) {
+	print("set status")
+	print(book)
+	if book.Status == 0 {
+		book.AcceptReturn = true
+		book.SendBorrowReq = false
+		book.AcceptBorrow = false
+		book.SendReturnReq = false
+	}
+	if book.Status == 1 {
+		book.AcceptReturn = false
+		book.SendBorrowReq = true
+		book.AcceptBorrow = false
+		book.SendReturnReq = false
+	}
+	if book.Status == 2 {
+		book.AcceptReturn = false
+		book.SendBorrowReq = false
+		book.AcceptBorrow = false
+		book.SendReturnReq = true
+	}
+	print(book)
 }
 func QueryBooksByName(name string) []*Book {
 	db := NewLibraryDB()
@@ -71,7 +71,7 @@ func QueryBooksByName(name string) []*Book {
 			print("Row error!!")
 			return books
 		}
-        SetStatusForTemplate(book)
+		SetStatusForTemplate(book)
 		books = append(books, book)
 	}
 	return books
@@ -91,7 +91,7 @@ func QueryBooksByUserName(username string) []*Book {
 			print("Row error!!")
 			return books
 		}
-        SetStatusForTemplate(book)
+		SetStatusForTemplate(book)
 		books = append(books, book)
 	}
 	return books
@@ -110,13 +110,13 @@ func QueryBookById(id int) *Book {
 			print("Row error!!")
 			return nil
 		}
-        SetStatusForTemplate(book)
+		SetStatusForTemplate(book)
 		return book
 	}
 	return nil
 }
 
-func QueryBookMapsByIds(ids []string) map[string]*Book{
+func QueryBookMapsByIds(ids []string) map[string]*Book {
 	db := NewLibraryDB()
 	defer closeDB(db)
 	books := make(map[string]*Book)
@@ -129,8 +129,8 @@ func QueryBookMapsByIds(ids []string) map[string]*Book{
 			print("Row error!!")
 			return nil
 		}
-        
-        SetStatusForTemplate(book)
+
+		SetStatusForTemplate(book)
 		books[strconv.Itoa(book.Id)] = book
 	}
 	return books
@@ -149,9 +149,9 @@ func UpdateBookStatus(id int, status int) {
 	defer closeDB(db)
 	sql := "update books set status=? where id =?"
 	db.Prepare(sql)
-    print("in update book status")
-    print(id)
-    print(status)
+	print("in update book status")
+	print(id)
+	print(status)
 	exec(db, sql, status, id)
 }
 
@@ -162,4 +162,3 @@ func DeleteBookById(id int) {
 	db.Prepare(sql)
 	exec(db, sql, id)
 }
-

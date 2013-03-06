@@ -27,7 +27,6 @@ func CreateUser(user *User) {
 	exec(db, sql, user.UserName, user.Name)
 }
 
-
 func RegistUser(user *User) {
 	db := NewLibraryDB()
 	defer closeDB(db)
@@ -37,30 +36,29 @@ func RegistUser(user *User) {
 	exec(db, sql, user.UserName, user.Pwd)
 }
 
-func GetRegisterUser(username,pwd string) *User {
-    db := NewLibraryDB()
-    defer closeDB(db)
-    sql := "select username,pwd from `user_pwd` where username=? and pwd=?"
-    print(sql)
-    print(username)
-    print(pwd)
-    db.Prepare(sql)
-    rows, _ := db.Query(sql, username, pwd)
-    if rows == nil {
-        return nil
-    }
-    for rows.Next() {
-        user := new(User)
-        row_err := rows.Scan(&user.UserName, &user.Pwd)
-        if row_err != nil {
-            print("Row error!!")
-            return nil 
-        }   
-        return user
-    }   
-    return nil 
+func GetRegisterUser(username, pwd string) *User {
+	db := NewLibraryDB()
+	defer closeDB(db)
+	sql := "select username,pwd from `user_pwd` where username=? and pwd=?"
+	print(sql)
+	print(username)
+	print(pwd)
+	db.Prepare(sql)
+	rows, _ := db.Query(sql, username, pwd)
+	if rows == nil {
+		return nil
+	}
+	for rows.Next() {
+		user := new(User)
+		row_err := rows.Scan(&user.UserName, &user.Pwd)
+		if row_err != nil {
+			print("Row error!!")
+			return nil
+		}
+		return user
+	}
+	return nil
 }
-
 
 func QueryUserByUserName(username string) *User {
 	db := NewLibraryDB()
@@ -102,7 +100,6 @@ func QueryUsers(start, limit int) []*User {
 
 func QueryUserMapsByIds(ids []string) map[string]*User {
 
-
 	db := NewLibraryDB()
 	defer closeDB(db)
 	sql := "select id,username,name,own_book_count,borrow_book_count,allow_book_count,allow_borrow_days,user_level from `user` where id in (" + strings.Join(ids, ",") + ")"
@@ -129,7 +126,6 @@ func AddAllowBorrowDays(count int, uid int) {
 	exec(db, sql, count, uid)
 }
 
-
 func IncreaseUserBookInfoCount(count int, uid int, updateType int) {
 	dataField := "own_book_count"
 	if updateType == 1 {
@@ -140,7 +136,7 @@ func IncreaseUserBookInfoCount(count int, uid int, updateType int) {
 	db := NewLibraryDB()
 	defer closeDB(db)
 	sql := "update `user` set " + dataField + "= " + dataField + "+?  where id =?"
-    print(sql)
+	print(sql)
 	db.Prepare(sql)
 	exec(db, sql, count, uid)
 }

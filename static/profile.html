@@ -2,9 +2,11 @@
 <body>
    hello, {{.user.UserName}}</br>
    我的店里有{{.user.OwnBookCount}}本书，</br>
-   我借了{{.user.BorrowBookCount}}本书 </br>
+   我共借阅过{{.user.BorrowBookCount}}本书 </br>
     <a href="/book/create?">添加图书</a> </br>
-   我借阅的书：</br>
+    <br/>  
+<HR align=left width=1000 color=#987cb9 SIZE=1> 
+ 我借阅的书：</br>
     {{range $.borrowList}}
         来自{{.Owner.UserName}}的书店，书名：{{.BookInfo.Name}} ,作者: {{.BookInfo.Author}},
         <br/>描述：{{.BookInfo.Describe}}</br>
@@ -18,12 +20,16 @@
         
  <br/>
     {{end}}
+<HR align=left width=1000 color=#987cb9 SIZE=1> 
+<HR align=left width=1000 color=#987cb9 SIZE=1> 
    我借出的书:</br>
     {{range $.lendList}}
         借阅者: {{.Borrower.UserName}} , 书名：{{.BookInfo.Name}} ,作者: {{.BookInfo.Author}},
         </br>描述：{{.BookInfo.Describe}}</br>
+        借阅时间:{{.StartTime}}</br>
 {{if .BookInfo.SendReturnReq}} <a href="/book/borrow?id={{.BookInfo.Id}}&info_id={{.Id}}&status=0">接受归还</a> | <a href="/book/borrow?id={{.BookInfo.Id}}&info_id={{.Id}}&status=3"> 拒绝 </a><br/>{{end}}
-    {{end}}
+  <HR align=left width=1000 color=#987cb9 SIZE=1>  
+   {{end}}
 </br>
 <a href="/index">返回首页</a>
 </body>

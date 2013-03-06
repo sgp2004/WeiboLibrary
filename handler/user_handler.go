@@ -2,38 +2,38 @@ package handler
 
 import (
 	"../dao"
+	"../service"
 	"../wb_util"
 	"fmt"
 	"io"
 	"net/http"
 	"text/template"
-	"../service"
 )
 
 func LogOutHandler(w http.ResponseWriter, r *http.Request) {
-    print("start login out----")
-    cookie, _ := r.Cookie("user")
-    user := cookie.Value
-    if user != "" {
-        cookie := http.Cookie{Name: "user", Value: "", Path: "/"}
-        http.SetCookie(w, &cookie)        
-    }
-    msg := "logout success!!!"
-    tmpl, _ := template.ParseFiles("./static/error.html")
-    tmpl.Execute(w, msg)
-    return
+	print("start login out----")
+	cookie, _ := r.Cookie("user")
+	user := cookie.Value
+	if user != "" {
+		cookie := http.Cookie{Name: "user", Value: "", Path: "/"}
+		http.SetCookie(w, &cookie)
+	}
+	msg := "logout success!!!"
+	tmpl, _ := template.ParseFiles("./static/error.html")
+	tmpl.Execute(w, msg)
+	return
 }
 func LoginHandler(w http.ResponseWriter, r *http.Request) {
-    print("start login----")
+	print("start login----")
 	username := r.FormValue("user")
 	pwd := r.FormValue("pwd")
 	pwdMd5 := wb_util.CreateMD5String(pwd)
-    print("------md5 pwd: ---")
-    print(pwd)
-    if !service.Auth(username,pwdMd5,pwd){
-        io.WriteString(w, "valid user error")
-        return    	
-    }
+	print("------md5 pwd: ---")
+	print(pwd)
+	if !service.Auth(username, pwdMd5, pwd) {
+		io.WriteString(w, "valid user error")
+		return
+	}
 
 	//add user if not exists
 	loginUser := dao.QueryUserByUserName(username)
@@ -58,12 +58,12 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 
 func RegisterHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
-        tmpl, _ := template.ParseFiles("./static/adduser.html")
+		tmpl, _ := template.ParseFiles("./static/adduser.html")
 
-        tmpl.Execute(w, "")
-        return
-    }  
-    username := r.FormValue("user")
+		tmpl.Execute(w, "")
+		return
+	}
+	username := r.FormValue("user")
 	pwd := r.FormValue("pwd")
 	pwdConfirm := r.FormValue("pwd_confirm")
 
@@ -74,9 +74,8 @@ func RegisterHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	if pwd == "" || pwd != pwdConfirm {
 		io.WriteString(w, "password confirm error, not the same one!")
-        return
-    }
-
+		return
+	}
 
 	user = new(dao.User)
 	user.UserName = username
@@ -84,17 +83,17 @@ func RegisterHandler(w http.ResponseWriter, r *http.Request) {
 	user.Pwd = wb_util.CreateMD5String(pwd)
 	dao.CreateUser(user)
 	dao.RegistUser(user)
-    msg := "register success!!!"
-    tmpl, _ := template.ParseFiles("./static/success.html")
-    tmpl.Execute(w, msg)
+	msg := "register success!!!"
+	tmpl, _ := template.ParseFiles("./static/success.html")
+	tmpl.Execute(w, msg)
 }
 
 func UsersShowHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("show shops")
-    users := dao.QueryUsers(0, 20)
-    fmt.Println(users[0])
-    locals := make(map[string]interface{})
-    locals["users"] = users
+	users := dao.QueryUsers(0, 20)
+	fmt.Println(users[0])
+	locals := make(map[string]interface{})
+	locals["users"] = users
 	tmpl, _ := template.ParseFiles("./static/book_shops.html")
 	tmpl.Execute(w, locals)
 }
@@ -106,19 +105,19 @@ func UpdateUserHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func ProfileHandler(w http.ResponseWriter, r *http.Request) {
-    cookie, _ := r.Cookie("user")
-    user := cookie.Value
+	cookie, _ := r.Cookie("user")
+	user := cookie.Value
 	if user == "" {
 		msg := "error,please login first"
 		tmpl, _ := template.ParseFiles("./static/error.html")
 		tmpl.Execute(w, msg)
 		return
 	}
-	borrowInfos,lendInfos := dao.BooksBorrowInfoByUserName(user)
+	borrowInfos, lendInfos := dao.BooksBorrowInfoByUserName(user)
 	userInfo := dao.QueryUserByUserName(user)
 	locals := make(map[string]interface{})
 	locals["borrowList"] = borrowInfos
-    locals["lendList"] = lendInfos
+	locals["lendList"] = lendInfos
 	locals["user"] = userInfo
 	tmpl, _ := template.ParseFiles("./static/profile.html")
 	tmpl.Execute(w, locals)
