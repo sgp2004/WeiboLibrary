@@ -14,7 +14,7 @@ import (
 func main() {
 	url := "http://10.209.134.40/index"
 	msgs := [6]string{"麻烦有空像一只喜鹊一样叽叽喳喳海森地去还一下", "麻烦你像一只小猫一样喵喵乖巧地去还一下", "麻烦有空像一只小鹿一样欢快地跑过去还一下", "麻烦像一只小兔子一样蹦蹦跳跳地开开心心过去还一下么么嗒", "麻烦你像一直小蜗牛一样背着阳光悠哉悠哉好温暖地过去还一下", "请自己去还一下"}
-	infos := dao.TimeLine("datediff(now(),start_time)>10 and is_back=0 ", 0, 20)
+	infos := dao.TimeLine("datediff(now(),start_time)>15 and is_back=0 ", 0, 20)
 	r := rand.New(rand.NewSource(time.Now().UnixNano()))
 	for i := 0; i < len(infos); i++ {
 
