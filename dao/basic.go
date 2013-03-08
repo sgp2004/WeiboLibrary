@@ -7,7 +7,8 @@ import (
 import _ "github.com/Go-SQL-Driver/MySQL"
 
 var dbtype = "mysql"
-var name = "root:root@tcp(localhost:3306)/weibo_library?charset=utf8"
+//var name = "root:root@tcp(localhost:3306)/weibo_library?charset=utf8"
+var name = "test:testpwd@tcp(testdb:3306)/weibo_library?charset=utf8"
 
 func NewDB(dbtype, name string) *sql.DB {
 	db, err := sql.Open(dbtype, name)
